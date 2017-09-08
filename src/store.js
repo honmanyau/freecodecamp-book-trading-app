@@ -1,20 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
+import reducer from './reducers';
 
 
-function temp(state = 0, action) {
-  switch(action.type) {
-    case 'TEMP':
-      return Object.assign({}, state, action.value);
-
-    default:
-      return state;
-  }
-}
 
 const store = createStore(
-  temp,
+  reducer,
   applyMiddleware(thunk)
 );
 
