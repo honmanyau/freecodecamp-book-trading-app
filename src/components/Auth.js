@@ -52,7 +52,7 @@ class Auth extends React.Component {
 const mapStateToprops = (state) => {
   return {
     auth: state.auth
-  }
+  };
 }
 
 export default withRouter(connect(mapStateToprops, null)(Auth));
