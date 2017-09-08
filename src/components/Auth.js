@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import * as common from '../common';
 
@@ -31,6 +33,7 @@ class Auth extends React.Component {
           iconElementRight={<FlatButton label='Sign in' />}
           onTitleTouchTap={() => this.home()}
           onLeftIconButtonTouchTap={() => this.setState({drawerOpened: true})}
+          onRightIconButtonTouchTap={() => this.props.history.push('/signin')}
         />
 
         <Drawer
@@ -46,4 +49,10 @@ class Auth extends React.Component {
   }
 }
 
-export default Auth;
+const mapStateToprops = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+export default withRouter(connect(mapStateToprops, null)(Auth));
