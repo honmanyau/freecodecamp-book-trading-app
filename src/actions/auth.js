@@ -34,6 +34,12 @@ export function signIn(email, password) {
   }
 }
 
+export function signOut() {
+  return function(dispatch) {
+    firebase.auth().signOut();
+  }
+}
+
 export function signingIn(progress) {
   return {
     type: SIGNING_IN,

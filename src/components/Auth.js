@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import { signOut } from '../actions/auth';
+
 import * as common from '../common';
 
 import AppBar from 'material-ui/AppBar';
@@ -22,18 +24,29 @@ class Auth extends React.Component {
 
   home() {
     // Refresh behaviour intended
-    return window.location.href = "/";
+    window.location.href = "/";
+  }
+
+  signOut() {
+    this.props.signOut();
+    window.location.href = "/";
   }
 
   render() {
+    const auth = this.props.auth;
+
     return(
       <div>
         <AppBar
           title='Lesen'
-          iconElementRight={<FlatButton label='Sign in' />}
+          iconElementRight={
+            <FlatButton
+              disabled={auth.inProgress ? true : false}
+              label={auth.inProgress ? 'Loading (╯°□°）╯︵ ┻━┻' : (auth.user ? 'Sign out' : 'Sign in')}
+              onClick={() => auth.user ? this.signOut() : this.props.history.push('/signin')}
+            />}
           onTitleTouchTap={() => this.home()}
           onLeftIconButtonTouchTap={() => this.setState({drawerOpened: true})}
-          onRightIconButtonTouchTap={() => this.props.history.push('/signin')}
         />
 
         <Drawer
@@ -55,4 +68,10 @@ const mapStateToprops = (state) => {
   };
 }
 
-export default withRouter(connect(mapStateToprops, null)(Auth));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signOut: () => dispatch(signOut())
+  };
+}
+
+export default withRouter(connect(mapStateToprops, mapDispatchToProps)(Auth));
