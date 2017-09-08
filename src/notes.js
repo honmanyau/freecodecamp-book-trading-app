@@ -1,5 +1,4 @@
 export default function notes() {
   console.log('--- SignIn <Link> to register');
-  console.log('--- Enter SignIn');
-  console.log('--- Sign in redirect link.')
+  console.log('--- Sign in redirect link (to dashboard).')
 }

@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import store from './store';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+
 import Auth from './components/Auth';
+import PrivateRoute from './components/PrivateRoute';
 import SignIn from './components/SignIn';
+import Dashboard from './components/Dashboard';
 
 import notes from './notes';
 notes();
@@ -22,8 +25,11 @@ ReactDOM.render(
         <div>
           <Auth />
 
-          <Route exact path="/" render={() => <div>index.js (╯°□°）╯︵ ┻━┻</div>}/>
-          <Route path="/signin" component={SignIn} />
+          <Switch>
+            <Route exact path="/" render={() => <div>index.js (╯°□°）╯︵ ┻━┻</div>}/>
+            <Route path="/signin" component={SignIn} />
+            <PrivateRoute path="/dashboard" component={Dashboard} passedAuth={store.getState().auth} />
+          </Switch>
         </div>
       </BrowserRouter>
     </MuiThemeProvider>
