@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Redirect, Link } from 'react-router-dom';
 
 import * as AuthActions from '../actions/auth';
 
@@ -33,7 +34,13 @@ class SignIn extends React.Component {
     };
   }
 
-  handleSignInButtonClick() {
+  handleTextFieldEnterKeypress(event) {
+    if (event.key === 'Enter') {
+      this.handleSignInFormSubmission();
+    }
+  }
+
+  handleSignInFormSubmission() {
     const email = this.state.email;
     const password = this.state.password;
 
@@ -71,47 +78,56 @@ class SignIn extends React.Component {
   render() {
     const auth = this.props.auth;
 
-    return(
-      <Card>
-        <CardText style={styles.container}>
-          <TextField
-            type='text'
-            value={this.state.email}
-            hintText='E-mail address'
-            errorText={this.state.emailError}
-            floatingLabelText='E-mail address'
-            floatingLabelFixed
-            onChange={(event) => this.setState({email: event.target.value})}
-          />
+    if (!auth.inProgress && auth.user) {
+      return <Redirect to="/" />;
+    }
+    else if (!auth.inProgress) {
+      return(
+        <Card>
+          <CardText style={styles.container}>
+            <TextField
+              type='text'
+              value={this.state.email}
+              hintText='E-mail address'
+              errorText={this.state.emailError}
+              floatingLabelText='E-mail address'
+              floatingLabelFixed
+              onChange={(event) => this.setState({email: event.target.value})}
+              onKeyPress={(event) => this.handleTextFieldEnterKeypress(event)}
+            />
 
-          <TextField
-            type='password'
-            value={this.state.password}
-            hintText='Password'
-            errorText={this.state.passwordError}
-            floatingLabelText='Password'
-            floatingLabelFixed
-            onChange={(event) => this.setState({password: event.target.value})}
-          />
+            <TextField
+              type='password'
+              value={this.state.password}
+              hintText='Password'
+              errorText={this.state.passwordError}
+              floatingLabelText='Password'
+              floatingLabelFixed
+              onChange={(event) => this.setState({password: event.target.value})}
+              onKeyPress={(event) => this.handleTextFieldEnterKeypress(event)}
+            />
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <RaisedButton
-            primary
-            disabled={auth.inProgress ? true : false}
-            label="Sign In"
-            onClick={() => this.handleSignInButtonClick()}
-          />
+            <RaisedButton
+              primary
+              disabled={auth.inProgress ? true : false}
+              label="Sign In"
+              onClick={() => this.handleSignInFormSubmission()}
+            />
 
-          <br />
-          {auth.signInError ? <div style={styles.errorMessage}>{auth.signInError}</div> : <br />}
-          <br />
+            <br />
+            {auth.signInError ? <div style={styles.errorMessage}>{auth.signInError}</div> : <br />}
+            <br />
 
-          <div>Create an account</div>
-        </CardText>
-      </Card>
-    )
+            <div>Create an account</div>
+          </CardText>
+        </Card>
+      )
+    }
+
+    return <Card style={styles.container}><CardText>Please wait.  (╯°□°）╯︵ ┻━┻</CardText></Card>
   }
 }
 

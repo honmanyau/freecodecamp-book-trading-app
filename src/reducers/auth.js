@@ -1,7 +1,8 @@
 import {
   SIGNING_IN,
   SIGNED_IN,
-  SIGN_IN_ERROR
+  SIGN_IN_ERROR,
+  SIGN_IN_REDIRECT
 } from '../actions/auth';
 
 
@@ -9,7 +10,8 @@ import {
 const initialState = {
   inProgress: false,
   user: null,
-  signInError: null
+  signInError: null,
+  signInRedirect: false
 };
 
 export default function auth(state = initialState, action) {
@@ -27,6 +29,11 @@ export default function auth(state = initialState, action) {
     case SIGN_IN_ERROR:
       return Object.assign({}, state, {
         signInError: action.payload.errorMessage
+      });
+
+    case SIGN_IN_REDIRECT:
+      return Object.assign({}, state, {
+        signInRedirect: action.payload.redirect
       });
 
     default:

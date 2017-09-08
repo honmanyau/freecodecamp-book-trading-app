@@ -5,6 +5,7 @@ import firebase from '../firebase';
 export const SIGNING_IN = 'SIGNING_IN';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGN_IN_ERROR = 'SIGN_IN_ERROR';
+export const SIGN_IN_REDIRECT = 'SIGN_IN_REDIRECT';
 
 // Dispatched in store.js for listening changes in auth state
 export function authListener() {
@@ -29,6 +30,7 @@ export function signIn(email, password) {
     // Additional checks before submitting
     if (email.match(/.+?@.+?\..+/) && password.length > 6) {
       firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => dispatch(signInRedirect()))
         .catch(error => dispatch(signInError(error.message)));
     }
   }
@@ -63,6 +65,15 @@ export function signInError(errorMessage) {
     type: SIGN_IN_ERROR,
     payload: {
       errorMessage
+    }
+  }
+}
+
+export function signInRedirect(redirect) {
+  return {
+    type: SIGN_IN_REDIRECT,
+    payload: {
+      redirect
     }
   }
 }
