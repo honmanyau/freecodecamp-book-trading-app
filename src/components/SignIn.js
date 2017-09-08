@@ -70,7 +70,6 @@ class SignIn extends React.Component {
 
   render() {
     const auth = this.props.auth;
-    console.log(auth);
 
     return(
       <Card>

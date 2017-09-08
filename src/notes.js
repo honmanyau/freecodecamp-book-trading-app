@@ -1,3 +1,3 @@
 export default function notes() {
-  console.log("Notes")
+  console.log('--- SignIn <Link> to register')
 }
