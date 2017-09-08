@@ -8,6 +8,7 @@ import store from './store';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Auth from './components/Auth';
+import SignIn from './components/SignIn';
 
 import notes from './notes';
 notes();
@@ -22,6 +23,7 @@ ReactDOM.render(
           <Auth />
 
           <Route exact path="/" render={() => <div>index.js (╯°□°）╯︵ ┻━┻</div>}/>
+          <Route path="/signin" component={SignIn} />
         </div>
       </BrowserRouter>
     </MuiThemeProvider>
