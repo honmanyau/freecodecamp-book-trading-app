@@ -17,6 +17,9 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center'
   },
+  link: {
+    color: 'black'
+  },
   errorMessage: {
     color: 'red'
   }
@@ -112,7 +115,7 @@ class SignIn extends React.Component {
             {auth.signInError ? <div style={styles.errorMessage}>{auth.signInError}</div> : <br />}
             <br />
 
-            <div>Create an account</div>
+            <div><Link style={styles.link} to="/register">Create an account</Link></div>
           </CardText>
         </Card>
       )
