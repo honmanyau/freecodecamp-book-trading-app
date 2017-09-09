@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 import { signOut } from '../actions/auth';
 
@@ -34,6 +34,11 @@ class Auth extends React.Component {
 
   render() {
     const auth = this.props.auth;
+    const pathname = this.props.location.pathname;
+
+    if (!auth.inProgress && auth.user && (pathname === '/signin' || pathname === '/register')) {
+      return <Redirect to="/dashboard" />
+    }
 
     return(
       <div>

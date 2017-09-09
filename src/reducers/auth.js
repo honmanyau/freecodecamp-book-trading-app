@@ -1,4 +1,5 @@
 import {
+  REGISTRATION_ERROR,
   SIGNING_IN,
   SIGNED_IN,
   SIGN_IN_ERROR,
@@ -8,6 +9,7 @@ import {
 
 
 const initialState = {
+  registrationError: false,
   inProgress: false,
   user: null,
   signInError: null,
@@ -16,6 +18,11 @@ const initialState = {
 
 export default function auth(state = initialState, action) {
   switch(action.type) {
+    case REGISTRATION_ERROR:
+      return Object.assign({}, state, {
+        registrationError: action.payload.progress
+      });
+
     case SIGNING_IN:
       return Object.assign({}, state, {
         inProgress: action.payload.progress

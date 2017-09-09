@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import * as AuthActions from '../actions/auth';
 
@@ -72,10 +72,7 @@ class SignIn extends React.Component {
   render() {
     const auth = this.props.auth;
 
-    if (!auth.inProgress && auth.user) {
-      return <Redirect to="/" />;
-    }
-    else if (!auth.inProgress) {
+    if (!auth.inProgress) {
       return(
         <Card>
           <CardText style={styles.container}>

@@ -1,7 +1,7 @@
 import firebase from '../firebase';
 
 
-
+export const REGISTRATION_ERROR = 'REGISTRATION_ERROR';
 export const SIGNING_IN = 'SIGNING_IN';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGN_IN_ERROR = 'SIGN_IN_ERROR';
@@ -25,13 +25,27 @@ export function authListener() {
   }
 }
 
+export function register(email, password, username) {
+  return function(dispatch) {
+    // Additional checks before submitting
+    if (email.match(/.+?@.+?\..+/) && password.length > 6 && username.length > 3) {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+          user.updateProfile({displayName: username})
+            .catch((error) => dispatch(registrationError('Error occured when updating display name.')));
+        })
+        .catch((error) => dispatch(registrationError(error.message)));
+    }
+  }
+}
+
 export function signIn(email, password) {
   return function(dispatch) {
     // Additional checks before submitting
     if (email.match(/.+?@.+?\..+/) && password.length > 6) {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => dispatch(signInRedirect()))
-        .catch(error => dispatch(signInError(error.message)));
+        .catch((error) => dispatch(signInError(error.message)));
     }
   }
 }
@@ -39,6 +53,15 @@ export function signIn(email, password) {
 export function signOut() {
   return function(dispatch) {
     firebase.auth().signOut();
+  }
+}
+
+export function registrationError(errorMessage) {
+  return {
+    type: REGISTRATION_ERROR,
+    payload: {
+      errorMessage
+    }
   }
 }
 
@@ -59,6 +82,8 @@ export function signedIn(user) {
     }
   }
 }
+
+
 
 export function signInError(errorMessage) {
   return {

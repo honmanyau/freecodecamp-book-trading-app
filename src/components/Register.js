@@ -89,7 +89,7 @@ class Register extends React.Component {
       passwordConfirmationError
     });
 
-    // this.props.actions.register(email, password, username);
+    this.props.actions.register(email, password, username);
   }
 
   handleTextFieldEnterKeypress(event) {
@@ -100,8 +100,6 @@ class Register extends React.Component {
 
   render() {
     const auth = this.props.auth;
-
-    console.log(this.state);
 
     return(
       <Card>
@@ -161,7 +159,7 @@ class Register extends React.Component {
           />
 
           <br />
-          {auth.signInError ? <div style={styles.errorMessage}>{auth.signInError}</div> : <br />}
+          {auth.signInError ? <div style={styles.errorMessage}>{auth.registrationError}</div> : <br />}
         </CardText>
       </Card>
     )
