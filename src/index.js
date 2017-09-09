@@ -11,6 +11,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Auth from './components/Auth';
 import PrivateRoute from './components/PrivateRoute';
 import SignIn from './components/SignIn';
+import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 
 import notes from './notes';
@@ -28,6 +29,7 @@ ReactDOM.render(
           <Switch>
             <Route exact path="/" render={() => <div>index.js (╯°□°）╯︵ ┻━┻</div>}/>
             <Route path="/signin" component={SignIn} />
+            <Route path="/register" component={Register} />
             <PrivateRoute path="/dashboard" component={Dashboard} passedAuth={store.getState().auth} />
           </Switch>
         </div>

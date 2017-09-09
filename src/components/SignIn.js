@@ -43,34 +43,28 @@ class SignIn extends React.Component {
   handleSignInFormSubmission() {
     const email = this.state.email;
     const password = this.state.password;
+    let emailError = null;
+    let passwordError = null;
 
-    if (!email.match(/.+?@.+?\..+/)) {
-      this.setState({
-        emailError: 'Please enter a valid e-mail address.'
-      });
+    if (!email) {
+      emailError = 'Please enter your e-mail address.';
     }
-    else {
-      this.setState({
-        emailError: null
-      });
+    else if (!email.match(/.+?@.+?\..+/)) {
+      emailError = 'Please enter a valid e-mail address.';
     }
 
 
     if (!password) {
-      this.setState({
-        passwordError: 'Please enter a password.'
-      });
+        passwordError = 'Please enter your password.';
     }
     else if (password.length < 6) {
-      this.setState({
-        passwordError: 'Please enter a valid password.'
-      });
+        passwordError = 'Invalid password.';
     }
-    else {
-      this.setState({
-        passwordError: null
-      });
-    }
+
+    this.setState({
+      emailError,
+      passwordError
+    });
 
     this.props.actions.signIn(email, password);
   }
