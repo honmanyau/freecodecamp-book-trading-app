@@ -22,14 +22,9 @@ class Auth extends React.Component {
     };
   }
 
-  home() {
-    // Refresh behaviour intended
-    window.location.href = "/";
-  }
-
   signOut() {
     this.props.signOut();
-    window.location.href = "/";
+    this.props.history.push('/');
   }
 
   render() {
@@ -63,7 +58,9 @@ class Auth extends React.Component {
           open={this.state.drawerOpened}
           onRequestChange={(drawerOpened) => this.setState({drawerOpened})}
         >
-          <MenuItem onClick={() => this.home()}>Home</MenuItem>
+          <MenuItem onClick={() => this.props.history.push('/')}>Home</MenuItem>
+          <MenuItem onClick={() => this.props.history.push('/dashboard')}>Dashboard</MenuItem>
+          <MenuItem onClick={() => this.props.history.push('/profile')}>Profile</MenuItem>
           <MenuItem onClick={() => window.open(common.gitHubRepositoryURL)}>GitHub Repository</MenuItem>
         </Drawer>
       </div>

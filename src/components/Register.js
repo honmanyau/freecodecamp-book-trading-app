@@ -54,8 +54,11 @@ class Register extends React.Component {
       emailError = 'Please enter a valid e-mail address.';
     }
 
-    if (!username) {
+    if (username.replace(/\s/g, '').length === 0) {
       usernameError = 'Please enter a username.';
+      this.setState({
+        username: ''
+      });
     }
     else if (username.length < 3) {
       usernameError = 'Your username must contain at least 3 characters.';
