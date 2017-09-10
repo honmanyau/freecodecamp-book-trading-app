@@ -16,6 +16,7 @@ export function authListener() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         dispatch(signedIn(user));
+        dispatch(fetchProfile(user.uid));
       }
       else {
         dispatch(signedIn(null));
@@ -43,6 +44,7 @@ export function register(email, password, username) {
 export function updateProfile(uid, profile) {
   return function(dispatch) {
     firebase.database().ref(`/book-app/users/${uid}`).update(profile)
+      .then(() => dispatch(fetchProfile(uid)))
       .catch((error) => console.log('Error occured while updating profile.'));
   }
 }
@@ -50,8 +52,16 @@ export function updateProfile(uid, profile) {
 export function fetchProfile(uid) {
   return function(dispatch) {
     firebase.database().ref(`/book-app/users/${uid}`).once('value')
-      .then((profile) => dispatch(storeProfile(profile)))
+      .then((snapshot) => dispatch(storeProfile(snapshot.val())))
       .catch((erorr) => console.log('Error when fetching profile.'));
+  }
+}
+
+export function updatePassword(user, newPassword) {
+  return function(dispatch) {
+    user.updatePassword(newPassword)
+      .then(() => console.log('Successfully updated password.'))
+      .catch(error => console.log('Error occured when updating password.'));
   }
 }
 

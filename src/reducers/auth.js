@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   registrationError: false,
-  inProgress: false,
+  inProgress: true,
   user: null,
   signInError: null,
   signInRedirect: false,

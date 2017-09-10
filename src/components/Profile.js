@@ -40,7 +40,7 @@ class Profile extends React.Component {
     };
   }
 
-  handleProfileUpdateButtonEnterKeypress(event) {
+  handleProfileUpdateTextFieldEnterKeypress(event) {
     if (event.key === 'Enter') {
       this.handleProfileUpdateFormSubmission();
     }
@@ -58,11 +58,11 @@ class Profile extends React.Component {
     let cityError = null;
     let stateError = null;
 
-    if (!city) {
+    if (city.replace(/\s/g, '').length === 0) {
       cityError = 'City must not be empty.';
     }
 
-    if (!state) {
+    if (state.replace(/\s/g, '').length === 0) {
         stateError = 'State must not be empty.';
     }
 
@@ -110,8 +110,8 @@ class Profile extends React.Component {
       passwordConfirmationError
     });
 
-    if (!passwordError && !passwordConfirmation) {
-      this.props.actions.updatePassword(this.props.auth.user.uid, this.state.password);
+    if (!passwordError && !passwordConfirmationError) {
+      this.props.actions.updatePassword(this.props.auth.user, this.state.password);
     }
   }
 
@@ -124,23 +124,23 @@ class Profile extends React.Component {
           <TextField
             type='text'
             value={this.state.city}
-            hintText='City'
+            hintText={auth.profile ? auth.profile.city : 'City'}
             errorText={this.state.cityError}
             floatingLabelText='City'
             floatingLabelFixed
             onChange={(event) => this.setState({city: event.target.value})}
-            onKeyPress={(event) => this.handleProfileUpdateButtonEnterKeypress(event)}
+            onKeyPress={(event) => this.handleProfileUpdateTextFieldEnterKeypress(event)}
           />
 
           <TextField
             type='text'
             value={this.state.state}
-            hintText='State'
+            hintText={auth.profile ? auth.profile.state : 'State'}
             errorText={this.state.stateError}
             floatingLabelText='State'
             floatingLabelFixed
             onChange={(event) => this.setState({state: event.target.value})}
-            onKeyPress={(event) => this.handleProfileUpdateButtonEnterKeypress(event)}
+            onKeyPress={(event) => this.handleProfileUpdateTextFieldEnterKeypress(event)}
           />
 
           <br />
@@ -165,7 +165,7 @@ class Profile extends React.Component {
             floatingLabelText='Password'
             floatingLabelFixed
             onChange={(event) => this.setState({password: event.target.value})}
-            onKeyPress={(event) => this.handlePasswordUpdateButtonEnterKeypress(event)}
+            onKeyPress={(event) => this.handlePasswordUpdateTextFieldEnterKeypress(event)}
           />
 
           <TextField
@@ -176,7 +176,7 @@ class Profile extends React.Component {
             floatingLabelText='Confirm Password'
             floatingLabelFixed
             onChange={(event) => this.setState({passwordConfirmation: event.target.value})}
-            onKeyPress={(event) => this.handlePasswordUpdateButtonEnterKeypress(event)}
+            onKeyPress={(event) => this.handlePasswordUpdateTextFieldEnterKeypress(event)}
           />
 
           <br />
@@ -186,7 +186,7 @@ class Profile extends React.Component {
             primary
             disabled={auth.inProgress ? true : false}
             label="Update Password"
-            onClick={() => this.handlePassworUpdateFormSubmission()}
+            onClick={() => this.handlePasswordUpdateFormSubmission()}
           />
 
         </CardText>
