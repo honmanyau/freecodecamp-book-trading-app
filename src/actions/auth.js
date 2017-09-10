@@ -6,6 +6,7 @@ export const SIGNING_IN = 'SIGNING_IN';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGN_IN_ERROR = 'SIGN_IN_ERROR';
 export const SIGN_IN_REDIRECT = 'SIGN_IN_REDIRECT';
+export const STORE_PROFILE = 'STORE_PROFILE';
 
 // Dispatched in store.js for listening changes in auth state
 export function authListener() {
@@ -36,6 +37,21 @@ export function register(email, password, username) {
         })
         .catch((error) => dispatch(registrationError(error.message)));
     }
+  }
+}
+
+export function upateProfile(uid, profile) {
+  return function(dispatch) {
+    firebase.database().ref(`/book-app/users/${uid}`).update(profile)
+      .catch((error) => console.log('Error occured while updating profile.'));
+  }
+}
+
+export function fetchProfile(uid) {
+  return function(dispatch) {
+    firebase.database().ref(`/book-app/users/${uid}`).once('value')
+      .then((profile) => dispatch(storeProfile(profile)))
+      .catch((erorr) => console.log('Error when fetching profile.'));
   }
 }
 
@@ -83,8 +99,6 @@ export function signedIn(user) {
   }
 }
 
-
-
 export function signInError(errorMessage) {
   return {
     type: SIGN_IN_ERROR,
@@ -99,6 +113,15 @@ export function signInRedirect(redirect) {
     type: SIGN_IN_REDIRECT,
     payload: {
       redirect
+    }
+  }
+}
+
+export function storeProfile(profile) {
+  return {
+    type: STORE_PROFILE,
+    payload: {
+      profile
     }
   }
 }

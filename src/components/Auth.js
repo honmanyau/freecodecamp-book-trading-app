@@ -40,6 +40,10 @@ class Auth extends React.Component {
       return <Redirect to="/dashboard" />
     }
 
+    if (!auth.inProgress && !auth.user && (pathname === '/dashboard')) {
+      return window.location.href = "/";
+    }
+
     return(
       <div>
         <AppBar
