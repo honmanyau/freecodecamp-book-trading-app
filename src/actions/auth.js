@@ -40,7 +40,7 @@ export function register(email, password, username) {
   }
 }
 
-export function upateProfile(uid, profile) {
+export function updateProfile(uid, profile) {
   return function(dispatch) {
     firebase.database().ref(`/book-app/users/${uid}`).update(profile)
       .catch((error) => console.log('Error occured while updating profile.'));

@@ -14,6 +14,7 @@ import Main from './components/Main';
 import SignIn from './components/SignIn';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
 
 import notes from './notes';
 notes();
@@ -32,6 +33,7 @@ ReactDOM.render(
             <Route path="/signin" component={SignIn} />
             <Route path="/register" component={Register} />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/profile" component={Profile} />
           </Switch>
 
           <Footer />

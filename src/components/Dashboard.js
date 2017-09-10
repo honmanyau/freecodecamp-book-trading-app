@@ -7,10 +7,11 @@ import { Card, CardText } from 'material-ui/Card';
 
 class Dashboard extends React.Component {
   render() {
-    console.log("DASHBOARD")
     return(
       <Card>
-        <CardText>Dashboard.js (╯°□°）╯︵ ┻━┻</CardText>
+        <CardText>
+          You must update your profile before trading books:
+        </CardText>
       </Card>
     )
   }

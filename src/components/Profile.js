@@ -16,20 +16,23 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center'
   },
+  link: {
+    color: 'black'
+  },
   errorMessage: {
     color: 'red'
   }
 }
 
-class Register extends React.Component {
+class Profile extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: '',
-      usernameError: null,
-      email: '',
-      emailError: null,
+      city: '',
+      cityError: null,
+      state: '',
+      stateError: null,
       password: '',
       passwordError: null,
       passwordConfirmation: '',
@@ -37,29 +40,50 @@ class Register extends React.Component {
     };
   }
 
-  handleSignInFormSubmission(event) {
-    const email = this.state.email;
-    const username = this.state.username;
+  handleProfileUpdateButtonEnterKeypress(event) {
+    if (event.key === 'Enter') {
+      this.handleProfileUpdateFormSubmission();
+    }
+  }
+
+  handlePasswordUpdateTextFieldEnterKeypress(event) {
+    if (event.key === 'Enter') {
+      this.handlePasswordUpdateFormSubmission();
+    }
+  }
+
+  handleProfileUpdateFormSubmission() {
+    const city = this.state.city;
+    const state = this.state.state;
+    let cityError = null;
+    let stateError = null;
+
+    if (!city) {
+      cityError = 'City must not be empty.';
+    }
+
+    if (!state) {
+        stateError = 'State must not be empty.';
+    }
+
+    this.setState({
+      cityError,
+      stateError
+    });
+
+    if (!cityError, !stateError) {
+      this.props.actions.updateProfile(this.props.auth.user.uid, {
+        city: this.state.city,
+        state: this.state.state
+      });
+    }
+  }
+
+  handlePasswordUpdateFormSubmission() {
     const password = this.state.password;
     const passwordConfirmation = this.state.passwordConfirmation;
-    let emailError = null;
-    let usernameError = null;
     let passwordError = null;
     let passwordConfirmationError = null;
-
-    if (!email) {
-      emailError = 'Please enter an e-mail address.';
-    }
-    else if (!email.match(/.+?@.+?\..+/)) {
-      emailError = 'Please enter a valid e-mail address.';
-    }
-
-    if (!username) {
-      usernameError = 'Please enter a username.';
-    }
-    else if (username.length < 3) {
-      usernameError = 'Your username must contain at least 3 characters.';
-    }
 
     if (!password) {
         passwordError = 'Please enter a password.';
@@ -82,20 +106,12 @@ class Register extends React.Component {
     }
 
     this.setState({
-      usernameError,
-      emailError,
       passwordError,
       passwordConfirmationError
     });
 
-    if (!usernameError && !emailError && !passwordError && !passwordConfirmationError) {
-      this.props.actions.register(email, password, username);
-    }
-  }
-
-  handleTextFieldEnterKeypress(event) {
-    if (event.key === 'Enter') {
-      this.handleSignInFormSubmission();
+    if (!passwordError && !passwordConfirmation) {
+      this.props.actions.updatePassword(this.props.auth.user.uid, this.state.password);
     }
   }
 
@@ -107,25 +123,39 @@ class Register extends React.Component {
         <CardText style={styles.container}>
           <TextField
             type='text'
-            value={this.state.email}
-            hintText='E-mail address'
-            errorText={this.state.emailError}
-            floatingLabelText='E-mail address'
+            value={this.state.city}
+            hintText='City'
+            errorText={this.state.cityError}
+            floatingLabelText='City'
             floatingLabelFixed
-            onChange={(event) => this.setState({email: event.target.value})}
-            onKeyPress={(event) => this.handleTextFieldEnterKeypress(event)}
+            onChange={(event) => this.setState({city: event.target.value})}
+            onKeyPress={(event) => this.handleProfileUpdateButtonEnterKeypress(event)}
           />
 
           <TextField
             type='text'
-            value={this.state.username}
-            hintText='Username'
-            errorText={this.state.usernameError}
-            floatingLabelText='E-mail address'
+            value={this.state.state}
+            hintText='State'
+            errorText={this.state.stateError}
+            floatingLabelText='State'
             floatingLabelFixed
-            onChange={(event) => this.setState({username: event.target.value})}
-            onKeyPress={(event) => this.handleTextFieldEnterKeypress(event)}
+            onChange={(event) => this.setState({state: event.target.value})}
+            onKeyPress={(event) => this.handleProfileUpdateButtonEnterKeypress(event)}
           />
+
+          <br />
+          <br />
+
+          <RaisedButton
+            primary
+            disabled={auth.inProgress ? true : false}
+            label="Update Profile"
+            onClick={() => this.handleProfileUpdateFormSubmission()}
+          />
+
+          <br />
+          {auth.signInError ? <div style={styles.errorMessage}>{auth.signInError}</div> : <br />}
+          <br />
 
           <TextField
             type='password'
@@ -135,7 +165,7 @@ class Register extends React.Component {
             floatingLabelText='Password'
             floatingLabelFixed
             onChange={(event) => this.setState({password: event.target.value})}
-            onKeyPress={(event) => this.handleTextFieldEnterKeypress(event)}
+            onKeyPress={(event) => this.handlePasswordUpdateButtonEnterKeypress(event)}
           />
 
           <TextField
@@ -146,7 +176,7 @@ class Register extends React.Component {
             floatingLabelText='Confirm Password'
             floatingLabelFixed
             onChange={(event) => this.setState({passwordConfirmation: event.target.value})}
-            onKeyPress={(event) => this.handleTextFieldEnterKeypress(event)}
+            onKeyPress={(event) => this.handlePasswordUpdateButtonEnterKeypress(event)}
           />
 
           <br />
@@ -155,12 +185,10 @@ class Register extends React.Component {
           <RaisedButton
             primary
             disabled={auth.inProgress ? true : false}
-            label="Register"
-            onClick={() => this.handleSignInFormSubmission()}
+            label="Update Password"
+            onClick={() => this.handlePassworUpdateFormSubmission()}
           />
 
-          <br />
-          {auth.signInError ? <div style={styles.errorMessage}>{auth.registrationError}</div> : <br />}
         </CardText>
       </Card>
     )
@@ -179,4 +207,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

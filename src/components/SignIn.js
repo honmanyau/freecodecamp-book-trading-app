@@ -69,7 +69,9 @@ class SignIn extends React.Component {
       passwordError
     });
 
-    this.props.actions.signIn(email, password);
+    if (!emailError && !passwordError) {
+      this.props.actions.signIn(email, password);
+    }
   }
 
   render() {
