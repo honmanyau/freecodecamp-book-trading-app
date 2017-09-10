@@ -71,10 +71,15 @@ class Profile extends React.Component {
       stateError
     });
 
-    if (!cityError, !stateError) {
+    if (!cityError && !stateError) {
       this.props.actions.updateProfile(this.props.auth.user.uid, {
         city: this.state.city,
         state: this.state.state
+      });
+
+      this.setState({
+        city: '',
+        state: ''
       });
     }
   }
@@ -112,6 +117,11 @@ class Profile extends React.Component {
 
     if (!passwordError && !passwordConfirmationError) {
       this.props.actions.updatePassword(this.props.auth.user, this.state.password);
+
+      this.setState({
+        password: '',
+        passwordConfirmation: ''
+      });
     }
   }
 
