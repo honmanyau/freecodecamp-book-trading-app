@@ -14,11 +14,9 @@ export function searchForBooks(bookName) {
 
 export function fetchCollection(uid) {
   return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}/books`).once('value')
-      .then((snapshot) => {
+    firebase.database().ref(`/book-app/users/${uid}/books`).on('value', (snapshot) => {
         dispatch(storeCollcetion(snapshot.val()));
-      })
-      .catch((error) => console.log('Error occured when fetching from collection.', error));
+      }, (error) => console.log('Error occured when fetching from collection.'));
   }
 }
 
@@ -27,6 +25,14 @@ export function addBookToCollection(uid, book) {
     firebase.database().ref(`/book-app/users/${uid}/books`).update(book)
       .catch((error) => console.log('Error occured when attempting to add a book to the collection.'))
 
+  }
+}
+
+export function removeBookFromCollection(uid, bookId) {
+  return function(dispatch) {
+    console.log("Nyaaaaaaa")
+    firebase.database().ref(`/book-app/users/${uid}/books/${bookId}`).set(null)
+      .catch((error) => console.log('Error occured when removing a book from the collection.'))
   }
 }
 

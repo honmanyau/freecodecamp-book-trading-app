@@ -100,7 +100,7 @@ class Collection extends React.Component {
               >
                 <Menu>
                   <MenuItem primaryText="Trade" />
-                  <MenuItem primaryText="Remove" />
+                  <MenuItem primaryText="Remove" onClick={() => this.props.actions.removeBookFromCollection(this.props.auth.user.uid, book.id)} />
                 </Menu>
               </Popover>
             </CardText>

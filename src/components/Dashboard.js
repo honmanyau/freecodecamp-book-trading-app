@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Card, CardText } from 'material-ui/Card';
+import { Card, CardText, CardTitle } from 'material-ui/Card';
 import { cyan500 } from 'material-ui/styles/colors';
 
 import Collection from './Collection';
@@ -25,11 +25,13 @@ class Dashboard extends React.Component {
       <Card>
         {
           !auth.inProgress && auth.profile ?
-            null
+            <span>
+              <CardTitle title="My Collection" />
+              <CardText><Collection /></CardText>
+            </span>
             :
             <CardText>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
         }
-        <CardText><Collection /></CardText>
         <CardText><Search /></CardText>
         <CardText><SearchResult /></CardText>
       </Card>

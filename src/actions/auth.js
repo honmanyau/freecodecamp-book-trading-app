@@ -21,6 +21,7 @@ export function authListener() {
 
       if (user) {
         dispatch(signedIn(user));
+        dispatch(signingIn(false));
 
         if (pathname === 'profile') {
           dispatch(fetchProfile(user.uid));
@@ -33,9 +34,8 @@ export function authListener() {
       }
       else {
         dispatch(signedIn(null));
+        dispatch(signingIn(false));
       }
-
-      dispatch(signingIn(false));
     });
   }
 }
