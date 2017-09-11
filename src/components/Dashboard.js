@@ -6,6 +6,7 @@ import { Card, CardText } from 'material-ui/Card';
 import { cyan500 } from 'material-ui/styles/colors';
 
 import Search from './Search';
+import SearchResult from './SearchResult';
 
 
 const styles = {
@@ -19,7 +20,8 @@ class Dashboard extends React.Component {
     return(
       <Card>
         <CardText>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
-        <Search />
+        <CardText><Search /></CardText>
+        <CardText><SearchResult /></CardText>
       </Card>
     )
   }

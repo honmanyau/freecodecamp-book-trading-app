@@ -43,7 +43,12 @@ class Search extends React.Component {
   }
 
   handleSearchTextFieldKeyPress(event) {
-
+    if (event.key === 'Enter' && this.state.searchString.replace(/\s/g, '').length) {
+      this.props.actions.searchForBooks(this.state.searchString);
+      this.setState({
+        searchString: ''
+      });
+    }
   }
 
   render() {

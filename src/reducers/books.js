@@ -11,6 +11,7 @@ const initialState = {
 export default function books(state = initialState, action) {
   switch(action.type) {
     case STORE_SEARCH_RESULT:
+    console.log(action.payload.searchResult)
       return Object.assign({}, state, {
         searchResult: action.payload.searchResult
       });
