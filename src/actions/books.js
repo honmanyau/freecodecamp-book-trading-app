@@ -41,12 +41,11 @@ export function removeBookFromCollection(uid, bookId) {
 
 export function listBook(uid, book, listed) {
   return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}/books/${book.id}`).update({trading: listed})
-      .then(() => {
-        firebase.database().ref(`/book-app/listed/${uid + book.id}`).set(Object.assign({}, book, {listed}))
-          .catch((error) => console.log('Error occured when unlisting book.'));
-      })
-      .catch((error) => console.log('Error occured when listing a book.'))
+    firebase.database().ref().update({
+      [`/book-app/users/${uid}/books/${book.id}/trading`]: listed,
+      [`/book-app/listed/${uid + book.id}`]: Object.assign({}, book, {listed})
+    })
+      .catch((error) => console.log('Error occured when listing a book.'));
   }
 }
 
