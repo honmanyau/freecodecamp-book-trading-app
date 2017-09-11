@@ -36,8 +36,14 @@ export function addBookToCollection(uid, book) {
 
 export function removeBookFromCollection(uid, bookId) {
   return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}/books/${bookId}`).set(null)
-      .catch((error) => console.log('Error occured when removing a book from the collection.'))
+    firebase.database().ref().update({
+      [`/book-app/users/${uid}/books/${bookId}`]: null,
+      [`/book-app/listed/${uid + bookId}/listed`]: false
+    })
+      .catch((error) => console.log('Error occured when removing a book from the collection.'));
+
+    // firebase.database().ref(`/book-app/users/${uid}/books/${bookId}`).set(null)
+    //   .catch((error) => console.log('Error occured when removing a book from the collection.'))
   }
 }
 

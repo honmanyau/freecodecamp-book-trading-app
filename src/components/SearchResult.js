@@ -78,6 +78,7 @@ class SearchResult extends React.Component {
                   {
                     [book.id]: {
                       id: book.id,
+                      uid: this.props.auth.user.uid,
                       title: info.title,
                       authors: info.authors,
                       year: info.publishedDate,

@@ -101,7 +101,7 @@ class Main extends React.Component {
               'Meows are fetching the list for you! (╯°□°）╯︵ ┻━┻'
               :
               (
-                listed.length > 0 ? listed : 'There are no books listed! (╯°□°）╯︵ ┻━┻'
+                listed ? (listed.length > 0 ? listed : 'There are no books listed! (╯°□°）╯︵ ┻━┻') : 'There are no books listed! (╯°□°）╯︵ ┻━┻'
               )
           }
         </CardText>
