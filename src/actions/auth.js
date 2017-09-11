@@ -43,7 +43,7 @@ export function register(email, password, username) {
 
 export function updateProfile(uid, profile) {
   return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}`).update(profile)
+    firebase.database().ref(`/book-app/users/${uid}/profile`).update(profile)
       .then(() => dispatch(fetchProfile(uid)))
       .catch((error) => console.log('Error occured while updating profile.'));
   }
@@ -51,7 +51,7 @@ export function updateProfile(uid, profile) {
 
 export function fetchProfile(uid) {
   return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}`).once('value')
+    firebase.database().ref(`/book-app/users/${uid}/profile`).once('value')
       .then((snapshot) => dispatch(storeProfile(snapshot.val())))
       .catch((erorr) => console.log('Error when fetching profile.'));
   }

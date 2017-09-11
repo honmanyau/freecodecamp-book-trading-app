@@ -49,7 +49,7 @@ class Auth extends React.Component {
               label={auth.inProgress ? 'Loading (╯°□°）╯︵ ┻━┻' : (auth.user ? 'Sign out' : 'Sign in')}
               onClick={() => auth.user ? this.signOut() : this.props.history.push('/signin')}
             />}
-          onTitleTouchTap={() => this.home()}
+          onTitleTouchTap={() => this.props.history.push('/')}
           onLeftIconButtonTouchTap={() => this.setState({drawerOpened: true})}
         />
 
