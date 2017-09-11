@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import * as AuthActions from '../actions/auth';
 
+import { cyan500 } from 'material-ui/styles/colors';
 import { Card, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -18,7 +19,7 @@ const styles = {
     alignItems: 'center'
   },
   link: {
-    color: 'black'
+    color: cyan500
   },
   errorMessage: {
     color: 'red'
