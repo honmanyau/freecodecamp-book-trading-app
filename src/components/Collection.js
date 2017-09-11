@@ -13,11 +13,6 @@ import MenuItem from 'material-ui/MenuItem';
 
 
 const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
-  },
   card: {
     margin: '5px',
     padding: '0',
@@ -90,7 +85,7 @@ class Collection extends React.Component {
 
       books = collection.map((book, index) => {
         return(
-          <Card style={styles.card} containerStyle={{padding: '0'}} key={book.id}>
+          <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={book.id}>
             <CardMedia
               style={styles.cardMedia}
               overlay={

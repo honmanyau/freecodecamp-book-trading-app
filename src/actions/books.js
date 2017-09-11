@@ -67,6 +67,13 @@ export function fetchListed() {
   }
 }
 
+export function makeOffer(uid, book, offer) {
+  return function(dispatch) {
+    firebase.database().ref(`/book-app/listed/${book.uid + book.id}/offered/${uid}`).set(offer ? true : null)
+      .catch((error) => console.log('Error occured when making an offer.', error));
+  }
+}
+
 export function fetchingListed(fetchingListed) {
   return {
     type: FETCHING_LISTED,

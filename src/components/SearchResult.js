@@ -54,7 +54,7 @@ class SearchResult extends React.Component {
         const info = book.volumeInfo;
 
         return(
-          <Card style={styles.card} containerStyle={{padding: '0'}} key={book.id}>
+          <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={book.id}>
             <CardMedia
               style={styles.cardMedia}
               overlay={

@@ -11,17 +11,17 @@ import FlatButton from 'material-ui/FlatButton';
 
 
 const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
-  },
   reminder: {
     fontSize: '14pt',
     textAlign: 'center'
   },
   link: {
     color: cyan500
+  },
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   card: {
     margin: '5px',
@@ -61,13 +61,13 @@ class Main extends React.Component {
     const books = this.props.books;
     let listed = null;
 
-    if (books.listed) {
+    if (!auth.inProgress && books.listed) {
       listed = Object.keys(books.listed).reduce((acc, key) => {
         const book = books.listed[key];
 
         if (book.listed) {
           acc.push(
-            <Card style={styles.card} containerStyle={{padding: '0'}} key={book.id}>
+            <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={book.id}>
               <CardMedia
                 style={styles.cardMedia}
                 overlay={
@@ -83,12 +83,14 @@ class Main extends React.Component {
               </CardMedia>
 
               {
-                !auth.inProgress && auth.user && auth.user.uid !== book.uid && auth.user.profile ?
+                auth.user.uid !== book.uid && auth.profile ?
                   <CardText style={styles.buttonContainer}>
                     <FlatButton
-                      primary
-                      label="Offer"
-                      onClick={() => console.log("Nya")}
+                      primary={book.offered ? false : true}
+                      secondary={book.offered ? true : false}
+                      disabled={book.offered ? (Object.keys(book.offered)[0] === auth.user.uid ? false : true) : false}
+                      label={book.offered ? (Object.keys(book.offered)[0] === auth.user.uid ? 'Withdraw' : 'Offered') : 'Offer'}
+                      onClick={() => this.props.actions.makeOffer(auth.user.uid, book, !book.offered)}
                     />
                   </CardText>
                   :
