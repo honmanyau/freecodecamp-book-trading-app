@@ -48,7 +48,8 @@ export function listBook(uid, book, listed) {
   return function(dispatch) {
     firebase.database().ref().update({
       [`/book-app/users/${uid}/books/${book.id}/trading`]: listed,
-      [`/book-app/listed/${uid + book.id}`]: Object.assign({}, book, {listed})
+      [`/book-app/users/${uid}/books/${book.id}/offered`]: null,
+      [`/book-app/listed/${uid + book.id}`]: Object.assign({}, book, {listed, offered: null})
     })
       .catch((error) => console.log('Error occured when listing a book.'));
   }
@@ -69,8 +70,21 @@ export function fetchListed() {
 
 export function makeOffer(uid, book, offer) {
   return function(dispatch) {
-    firebase.database().ref(`/book-app/listed/${book.uid + book.id}/offered/${uid}`).set(offer ? true : null)
-      .catch((error) => console.log('Error occured when making an offer.', error));
+    firebase.database().ref().update({
+      [`/book-app/listed/${book.uid + book.id}/offered/${uid}`]: offer ? true : null,
+      [`/book-app/users/${book.uid}/books/${book.id}/offered/${uid}`]: offer ? true : null
+    })
+      .catch((error) => console.log('Error occured when making an offer.'));
+  }
+}
+
+export function acceptTrade(uid, book, trade) {
+  return function(dispatch) {
+    firebase.database().ref().update({
+      [`/book-app/listed/${book.uid + book.id}/accepted`]: trade,
+      [`/book-app/users/${book.uid}/books/${book.id}/accepted`]: trade
+    })
+      .catch((error) => console.log('Error occured when accepting an offer.'));
   }
 }
 

@@ -86,10 +86,10 @@ class Main extends React.Component {
                 auth.user.uid !== book.uid && auth.profile ?
                   <CardText style={styles.buttonContainer}>
                     <FlatButton
-                      primary={book.offered ? false : true}
-                      secondary={book.offered ? true : false}
+                      primary={book.offered ? (book.accepted ? true : false) : true}
+                      secondary={book.offered ? (book.accepted ? false : true) : false}
                       disabled={book.offered ? (Object.keys(book.offered)[0] === auth.user.uid ? false : true) : false}
-                      label={book.offered ? (Object.keys(book.offered)[0] === auth.user.uid ? 'Withdraw' : 'Offered') : 'Offer'}
+                      label={book.offered ? (Object.keys(book.offered)[0] === auth.user.uid ? (book.accepted ? '--Accepted--' : 'Withdraw') : 'Offered') : 'Offer'}
                       onClick={() => this.props.actions.makeOffer(auth.user.uid, book, !book.offered)}
                     />
                   </CardText>

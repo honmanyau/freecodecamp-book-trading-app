@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import * as BookActions from '../actions/books';
 
+import { pink500 } from 'material-ui/styles/colors';
 import { Card, CardMedia, CardText, CardTitle } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
@@ -68,6 +69,16 @@ class Collection extends React.Component {
     this.resetPopover();
   }
 
+  handleAcceptTrade(uid, book) {
+    this.props.actions.acceptTrade(uid, book, true);
+    this.resetPopover();
+  }
+
+  handleWithdrawTrade(uid, book) {
+    this.props.actions.acceptTrade(uid, book, false);
+    this.resetPopover();
+  }
+
   resetPopover() {
     this.setState({
       openedPopover: null,
@@ -101,8 +112,9 @@ class Collection extends React.Component {
             </CardMedia>
             <CardText style={styles.buttonContainer}>
               <FlatButton
-                primary={book.trading ? false : true}
-                label={book.trading ? '--Listed--' : 'Options'}
+                primary={!book.trading || book.accepted ? true : false}
+                secondary={book.offered ? (book.accepted ? false : true) : false}
+                label={book.trading ? (book.offered ? (book.accepted ? '--Accepted--' : '--Pending--') : 'Listed') : 'Options'}
                 onClick={(event) => this.handlePopoverButtonClick(index, event.currentTarget)}
               />
               <Popover
@@ -113,25 +125,45 @@ class Collection extends React.Component {
                 onRequestClose={() => this.setState({openedPopover: null})}
               >
                 <Menu>
-                  {!auth.fetchingProfile && auth.profile ?
-                    (
-                      book.trading ?
-                        (
+                  {
+                    book.offered ?
+                      (
+                        book.accepted ?
                           <MenuItem
-                            primaryText="Unlist"
-                            onClick={() => this.handleTrade(auth.user.uid, book, false)}
+                            style={{color: pink500}}
+                            primaryText="Withdraw"
+                            onClick={() => this.handleWithdrawTrade(auth.user.uid, book)}
                           />
-                        )
-                        :
-                        (
+                          :
                           <MenuItem
-                            primaryText="Trade"
-                            onClick={() => this.handleTrade(auth.user.uid, book, true)}
+                            style={{color: pink500}}
+                            primaryText="Accept"
+                            onClick={() => this.handleAcceptTrade(auth.user.uid, book)}
                           />
-                        )
-                    )
-                    :
-                    null
+                      )
+                      :
+                      null
+                  }
+                  {
+                    !auth.fetchingProfile && auth.profile ?
+                      (
+                        book.trading ?
+                          (
+                            <MenuItem
+                              primaryText="Unlist"
+                              onClick={() => this.handleTrade(auth.user.uid, book, false)}
+                            />
+                          )
+                          :
+                          (
+                            <MenuItem
+                              primaryText="Trade"
+                              onClick={() => this.handleTrade(auth.user.uid, book, true)}
+                            />
+                          )
+                      )
+                      :
+                      null
                   }
                   <MenuItem
                     primaryText="Remove"
