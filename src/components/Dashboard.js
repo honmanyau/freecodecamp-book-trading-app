@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardText } from 'material-ui/Card';
 import { cyan500 } from 'material-ui/styles/colors';
 
+import Collection from './Collection';
 import Search from './Search';
 import SearchResult from './SearchResult';
 
@@ -28,6 +29,7 @@ class Dashboard extends React.Component {
             :
             <CardText>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
         }
+        <CardText><Collection /></CardText>
         <CardText><Search /></CardText>
         <CardText><SearchResult /></CardText>
       </Card>

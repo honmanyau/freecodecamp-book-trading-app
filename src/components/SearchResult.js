@@ -22,7 +22,7 @@ const styles = {
     justifyContent: 'center'
   },
   cardMedia: {
-    height: '220px',
+    height: '200px',
     overflow: 'hidden'
   },
   overlayTitle: {
@@ -49,7 +49,6 @@ class SearchResult extends React.Component {
     if (books) {
       results = books.map((book, index) => {
         const info = book.volumeInfo;
-        const authors = info.authors.length > 1 ? info.authors[0].slice(0, 18) + " et al." : info.authors[0].slice(0, 22);
 
         return(
           <Card style={styles.card} containerStyle={{padding: '0'}} key={book.id}>
@@ -60,7 +59,7 @@ class SearchResult extends React.Component {
                   titleStyle={styles.overlayTitle}
                   subtitleStyle={styles.overlaySubtitle}
                   title={info.title}
-                  subtitle={authors}
+                  subtitle={info.authors.length > 1 ? info.authors[0].slice(0, 18) + " et al." : info.authors[0].slice(0, 22)}
                 />
               }
             >

@@ -3,11 +3,30 @@ import firebase from '../firebase';
 
 
 export const STORE_SEARCH_RESULT = 'STORE_SEARCH_RESULT';
+export const STORE_COLLECTION = 'STORE_COLLECTION';
 
 export function searchForBooks(bookName) {
   return function(dispatch) {
     // FakePI call for testing
     dispatch(storeSearchResult(sampleResponse.items));
+  }
+}
+
+export function fetchCollection(uid) {
+  return function(dispatch) {
+    firebase.database().ref(`/book-app/users/${uid}/books`).once('value')
+      .then((snapshot) => {
+        dispatch(storeCollcetion(snapshot.val()));
+      })
+      .catch((error) => console.log('Error occured when fetching from collection.', error));
+  }
+}
+
+export function addBookToCollection(uid, book) {
+  return function(dispatch) {
+    firebase.database().ref(`/book-app/users/${uid}/books`).update(book)
+      .catch((error) => console.log('Error occured when attempting to add a book to the collection.'))
+
   }
 }
 
@@ -20,21 +39,12 @@ export function storeSearchResult(searchResult) {
   }
 }
 
-export function fetchCollection(uid) {
-  return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}/books`).once('value')
-      .then((snapshot) => {
-        console.log(snapshot.val())
-      })
-      .catch((error) => console.log('Error occured when fetching from collection.'));
-  }
-}
-
-export function addBookToCollection(uid, book) {
-  return function(dispatch) {
-    firebase.database().ref(`/book-app/users/${uid}/books`).update(book)
-      .catch((error) => console.log('Error occured when attempting to add a book to the collection.'))
-
+export function storeCollcetion(collection) {
+  return {
+    type: STORE_COLLECTION,
+    payload: {
+      collection
+    }
   }
 }
 
