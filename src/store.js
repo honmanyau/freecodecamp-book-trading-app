@@ -12,6 +12,4 @@ const store = createStore(
 
 store.dispatch(authListener());
 
-console.log('STORE: ', store.getState())
-
 export default store;

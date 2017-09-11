@@ -16,9 +16,6 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 
-import notes from './notes';
-notes();
-
 
 
 ReactDOM.render(
