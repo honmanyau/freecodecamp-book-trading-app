@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import * as BooksActions from '../actions/books';
 
-import { Card, CardActions, CardMedia, CardText, CardTitle } from 'material-ui/Card';
+import { Card, CardMedia, CardText, CardTitle } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 
@@ -18,8 +18,7 @@ const styles = {
   card: {
     margin: '5px',
     padding: '0',
-    display: 'inline-block',
-    display: 'flex',
+    display: 'inline-flex',
     justifyContent: 'center'
   },
   cardMedia: {

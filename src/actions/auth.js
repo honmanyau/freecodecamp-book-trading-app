@@ -1,5 +1,8 @@
 import firebase from '../firebase';
 
+import { fetchCollection } from './books';
+
+
 
 export const REGISTRATION_ERROR = 'REGISTRATION_ERROR';
 export const SIGNING_IN = 'SIGNING_IN';
@@ -14,9 +17,19 @@ export function authListener() {
     dispatch(signingIn(true));
 
     firebase.auth().onAuthStateChanged(user => {
+      const pathname = window.location.pathname;
+
       if (user) {
         dispatch(signedIn(user));
-        dispatch(fetchProfile(user.uid));
+
+        if (pathname === 'profile') {
+          dispatch(fetchProfile(user.uid));
+        }
+
+        if (pathname === '/dashboard') {
+          dispatch(fetchProfile(user.uid));
+          dispatch(fetchCollection(user.uid));
+        }
       }
       else {
         dispatch(signedIn(null));
