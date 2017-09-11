@@ -12,6 +12,10 @@ import SearchResult from './SearchResult';
 
 
 const styles = {
+  reminder: {
+    fontSize: '14pt',
+    textAlign: 'center'
+  },
   link: {
     color: cyan500
   }
@@ -30,7 +34,7 @@ class Dashboard extends React.Component {
               <CardText><Collection /></CardText>
             </span>
             :
-            <CardText>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
+            <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
         }
         <CardText><Search /></CardText>
         <CardText><SearchResult /></CardText>

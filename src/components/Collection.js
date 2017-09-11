@@ -51,7 +51,8 @@ class Collection extends React.Component {
     super(props);
 
     this.state = {
-      openedPopover: null
+      openedPopover: null,
+      anchorElement: null
     };
   }
 
@@ -59,6 +60,14 @@ class Collection extends React.Component {
     this.setState({
       openedPopover: index,
       anchorElement: target
+    });
+  }
+
+  handleRemoveBook(uid, bookId) {
+    this.props.actions.removeBookFromCollection(uid, bookId);
+    this.setState({
+      openedPopover: null,
+      anchorElement: null
     });
   }
 
@@ -100,7 +109,7 @@ class Collection extends React.Component {
               >
                 <Menu>
                   <MenuItem primaryText="Trade" />
-                  <MenuItem primaryText="Remove" onClick={() => this.props.actions.removeBookFromCollection(this.props.auth.user.uid, book.id)} />
+                  <MenuItem primaryText="Remove" onClick={() => this.handleRemoveBook(this.props.auth.user.uid, book.id)} />
                 </Menu>
               </Popover>
             </CardText>

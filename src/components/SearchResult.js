@@ -46,7 +46,10 @@ class SearchResult extends React.Component {
   render() {
     const books = this.props.books.searchResult;
     let results = null;
+
     if (books) {
+      const collectionId = this.props.books.collection ? Object.keys(this.props.books.collection) : [];
+
       results = books.map((book, index) => {
         const info = book.volumeInfo;
 
@@ -68,7 +71,8 @@ class SearchResult extends React.Component {
             <CardText style={styles.buttonContainer}>
               <FlatButton
                 primary
-                label="Add"
+                disabled={collectionId.indexOf(book.id) < 0 ? false : true}
+                label={collectionId.indexOf(book.id) < 0 ? 'Add' : 'Added'}
                 onClick={() => this.props.actions.addBookToCollection(
                   this.props.auth.user.uid,
                   {
@@ -77,7 +81,7 @@ class SearchResult extends React.Component {
                       title: info.title,
                       authors: info.authors,
                       year: info.publishedDate,
-                      imageUrl: info.imageLinks.thumbnail
+                      imageUrl: info.imageLinks ? info.imageLinks.thumbnail : null
                   }
                 })}
               />

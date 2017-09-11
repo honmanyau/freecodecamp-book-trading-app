@@ -30,7 +30,6 @@ export function addBookToCollection(uid, book) {
 
 export function removeBookFromCollection(uid, bookId) {
   return function(dispatch) {
-    console.log("Nyaaaaaaa")
     firebase.database().ref(`/book-app/users/${uid}/books/${bookId}`).set(null)
       .catch((error) => console.log('Error occured when removing a book from the collection.'))
   }
