@@ -10,6 +10,7 @@ import { Card, CardMedia, CardText, CardTitle } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 
+
 const styles = {
   reminder: {
     fontSize: '14pt',
@@ -56,33 +57,29 @@ class Main extends React.Component {
     this.props.actions.fetchListed();
   }
 
-  render() {
-    const auth = this.props.auth;
-    const books = this.props.books;
-    let listed = null;
+  returnBookElement(auth, books, acc, key) {
+    const book = books.listed[key];
 
-    if (!auth.inProgress && books.listed) {
-      listed = Object.keys(books.listed).reduce((acc, key) => {
-        const book = books.listed[key];
+    if (book.listed) {
+      acc.push(
+        <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={book.id}>
+          <CardMedia
+            style={styles.cardMedia}
+            overlay={
+              <CardTitle
+                titleStyle={styles.overlayTitle}
+                subtitleStyle={styles.overlaySubtitle}
+                title={book.title}
+                subtitle={book.authors.length > 1 ? book.authors[0].slice(0, 18) + " et al." : book.authors[0].slice(0, 22)}
+              />
+            }
+          >
+            <img style={styles.image} alt={book.imageUrl ? book.title : 'No image available'} src={book.imageUrl ? book.imageUrl : null} />
+          </CardMedia>
 
-        if (book.listed) {
-          acc.push(
-            <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={book.id}>
-              <CardMedia
-                style={styles.cardMedia}
-                overlay={
-                  <CardTitle
-                    titleStyle={styles.overlayTitle}
-                    subtitleStyle={styles.overlaySubtitle}
-                    title={book.title}
-                    subtitle={book.authors.length > 1 ? book.authors[0].slice(0, 18) + " et al." : book.authors[0].slice(0, 22)}
-                  />
-                }
-              >
-                <img style={styles.image} alt={book.imageUrl ? book.title : 'No image available'} src={book.imageUrl ? book.imageUrl : null} />
-              </CardMedia>
-
-              {
+          {
+            !auth.inProgress && auth.user ?
+              (
                 auth.user.uid !== book.uid && auth.profile ?
                   <CardText style={styles.buttonContainer}>
                     <FlatButton
@@ -95,10 +92,34 @@ class Main extends React.Component {
                   </CardText>
                   :
                   null
-              }
-            </Card>
-          );
-        }
+              )
+              :
+              null
+          }
+        </Card>
+      );
+    }
+  }
+
+  render() {
+    const auth = this.props.auth;
+    const books = this.props.books;
+    let listed = null;
+    let requests = null;
+
+    if (!auth.inProgress && books.listed) {
+      listed = Object.keys(books.listed).reduce((acc, key) => {
+
+        this.returnBookElement(auth, books, acc, key);
+
+        return acc;
+      }, []);
+    }
+
+    if (!auth.inProgress && books.requests) {
+      requests = Object.keys(books.requests).reduce((acc, key) => {
+
+        this.returnBookElement(auth, books, acc, key);
 
         return acc;
       }, []);
@@ -112,7 +133,24 @@ class Main extends React.Component {
             :
             null
         }
-        <CardText style={styles.container}>
+        {!auth.inProgress && auth.user ? <CardTitle title="My Trade Requests" /> : null}
+        <CardText>
+        {
+          !auth.inProgress && auth.user ?
+            (
+              books.fetchingRequests ?
+                'Meows are fetching your requests for you! (╯°□°）╯︵ ┻━┻'
+                :
+                (
+                  requests ? (requests.length > 0 ? requests : 'There are no oustanding requests! (╯°□°）╯︵ ┻━┻') : 'There are no books listed! (╯°□°）╯︵ ┻━┻'
+                )
+            )
+            :
+            null
+        }
+        </CardText>
+        <CardTitle title="Listed Books" />
+        <CardText>
           {
             books.fetchingListed ?
               'Meows are fetching the list for you! (╯°□°）╯︵ ┻━┻'

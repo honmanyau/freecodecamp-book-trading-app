@@ -4,6 +4,8 @@ import {
   STORE_COLLECTION,
   FETCHING_LISTED,
   STORE_LISTED,
+  FETCHING_REQUESTS,
+  STORE_REQUESTS
 } from '../actions/books';
 
 
@@ -13,7 +15,9 @@ const initialState = {
   fetchingCollection: true,
   collection: null,
   fetchingListed: true,
-  listed: null
+  listed: null,
+  fetchingRequests: true,
+  requests: null
 };
 
 export default function books(state = initialState, action) {
@@ -41,6 +45,16 @@ export default function books(state = initialState, action) {
     case STORE_LISTED:
       return Object.assign({}, state, {
         listed: action.payload.listed
+      });
+
+    case FETCHING_REQUESTS:
+      return Object.assign({}, state, {
+        fetchingRequests: action.payload.fetchingRequests
+      });
+
+    case STORE_REQUESTS:
+      return Object.assign({}, state, {
+        requests: action.payload.requests
       });
 
     default:

@@ -1,6 +1,6 @@
 import firebase from '../firebase';
 
-import { fetchCollection } from './books';
+import { fetchCollection, fetchRequests } from './books';
 
 
 
@@ -23,6 +23,7 @@ export function authListener() {
         dispatch(signingIn(false));
         dispatch(fetchProfile(user.uid));
         dispatch(fetchCollection(user.uid));
+        dispatch(fetchRequests(user.uid));
       }
       else {
         dispatch(signedIn(null));

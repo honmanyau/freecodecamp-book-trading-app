@@ -167,7 +167,7 @@ class Collection extends React.Component {
                   }
                   <MenuItem
                     primaryText="Remove"
-                    onClick={() => this.handleRemoveBook(auth.user.uid, book.id)}
+                    onClick={() => this.handleRemoveBook(auth.user.uid, book)}
                   />
                 </Menu>
               </Popover>

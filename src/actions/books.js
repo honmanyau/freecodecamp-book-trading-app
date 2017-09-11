@@ -7,6 +7,8 @@ export const STORE_SEARCH_RESULT = 'STORE_SEARCH_RESULT';
 export const STORE_COLLECTION = 'STORE_COLLECTION';
 export const STORE_LISTED = 'STORE_LISTED';
 export const FETCHING_LISTED = 'FETCHING_LISTED';
+export const FETCHING_REQUESTS = 'FETCHING_REQUESTS';
+export const STORE_REQUESTS = 'STORE_REQUESTS';
 
 export function searchForBooks(bookName) {
   return function(dispatch) {
@@ -34,23 +36,36 @@ export function addBookToCollection(uid, book) {
   }
 }
 
-export function removeBookFromCollection(uid, bookId) {
+export function removeBookFromCollection(uid, book) {
   return function(dispatch) {
-    firebase.database().ref().update({
-      [`/book-app/users/${uid}/books/${bookId}`]: null,
-      [`/book-app/listed/${uid + bookId}`]: {listed: false, id: bookId}
-    })
+    const updates = {
+      [`/book-app/users/${uid}/books/${book.id}`]: null,
+      [`/book-app/listed/${uid + book.id}`]: {listed: false, id: book.id},
+      [`/book-app/listed/${uid + book.id}`]: Object.assign({}, book, {listed: null, offered: null})
+    };
+
+    if (book.offered) {
+      updates[`/book-app/users/${Object.keys(book.offered)[0]}/requests/${book.uid + book.id}`] = null;
+    }
+
+    firebase.database().ref().update(updates)
       .catch((error) => console.log('Error occured when removing a book from the collection.'));
   }
 }
 
 export function listBook(uid, book, listed) {
   return function(dispatch) {
-    firebase.database().ref().update({
+    const updates = {
       [`/book-app/users/${uid}/books/${book.id}/trading`]: listed,
       [`/book-app/users/${uid}/books/${book.id}/offered`]: null,
       [`/book-app/listed/${uid + book.id}`]: Object.assign({}, book, {listed, offered: null})
-    })
+    };
+
+    if (book.offered) {
+      updates[`/book-app/users/${Object.keys(book.offered)[0]}/requests/${book.uid + book.id}`] = null;
+    }
+
+    firebase.database().ref().update(updates)
       .catch((error) => console.log('Error occured when listing a book.'));
   }
 }
@@ -72,7 +87,8 @@ export function makeOffer(uid, book, offer) {
   return function(dispatch) {
     firebase.database().ref().update({
       [`/book-app/listed/${book.uid + book.id}/offered/${uid}`]: offer ? true : null,
-      [`/book-app/users/${book.uid}/books/${book.id}/offered/${uid}`]: offer ? true : null
+      [`/book-app/users/${book.uid}/books/${book.id}/offered/${uid}`]: offer ? true : null,
+      [`/book-app/users/${uid}/requests/${book.uid + book.id}`]: offer ? book : null
     })
       .catch((error) => console.log('Error occured when making an offer.'));
   }
@@ -85,6 +101,17 @@ export function acceptTrade(uid, book, trade) {
       [`/book-app/users/${book.uid}/books/${book.id}/accepted`]: trade
     })
       .catch((error) => console.log('Error occured when accepting an offer.'));
+  }
+}
+
+export function fetchRequests(uid) {
+  return function(dispatch) {
+    dispatch(fetchingRequests(true));
+
+    firebase.database().ref(`/book-app/users/${uid}/requests`).on('value', (snapshot) => {
+      dispatch(storeRequests(snapshot.val()));
+      dispatch(fetchingRequests(false));
+    }, (error) => console.log('Error occured when fetching requests.'))
   }
 }
 
@@ -129,6 +156,24 @@ export function storeListed(listed) {
     type: STORE_LISTED,
     payload: {
       listed
+    }
+  }
+}
+
+export function storeRequests(requests) {
+  return {
+    type: STORE_REQUESTS,
+    payload: {
+      requests
+    }
+  }
+}
+
+export function fetchingRequests(fetchingRequests) {
+  return {
+    type: FETCHING_REQUESTS,
+    payload: {
+      fetchingRequests
     }
   }
 }
