@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import * as BookActions from '../actions/books';
 
+import { cyan500 } from 'material-ui/styles/colors';
 import { Card, CardMedia, CardText, CardTitle } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -13,6 +15,13 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap'
+  },
+  reminder: {
+    fontSize: '14pt',
+    textAlign: 'center'
+  },
+  link: {
+    color: cyan500
   },
   card: {
     margin: '5px',
@@ -74,7 +83,7 @@ class Main extends React.Component {
               </CardMedia>
 
               {
-                !auth.inProgress && auth.user && auth.user.uid !== book.uid ?
+                !auth.inProgress && auth.user && auth.user.uid !== book.uid && auth.user.profile ?
                   <CardText style={styles.buttonContainer}>
                     <FlatButton
                       primary
@@ -95,6 +104,12 @@ class Main extends React.Component {
 
     return(
       <Card>
+        {
+          !auth.fetchingProfile ?
+            (auth.profile ? null : <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before you can made a trade offer.  (╯°□°）╯︵ ┻━┻</CardText>)
+            :
+            null
+        }
         <CardText style={styles.container}>
           {
             books.fetchingListed ?

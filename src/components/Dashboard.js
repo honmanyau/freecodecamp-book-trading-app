@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
       <Card>
         {
           !auth.fetchingProfile ?
-            (auth.profile ? null : <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>)
+            (auth.profile ? null : <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.  (╯°□°）╯︵ ┻━┻</CardText>)
             :
             null
         }
