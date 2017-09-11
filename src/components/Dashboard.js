@@ -18,9 +18,17 @@ const styles = {
 
 class Dashboard extends React.Component {
   render() {
+    const auth = this.props.auth;
+    console.log(auth.inProgress, auth.profile)
+
     return(
       <Card>
-        <CardText>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
+        {
+          !auth.inProgress && auth.profile ?
+            null
+            :
+            <CardText>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
+        }
         <CardText><Search /></CardText>
         <CardText><SearchResult /></CardText>
       </Card>
@@ -28,4 +36,11 @@ class Dashboard extends React.Component {
   }
 }
 
-export default connect(null, null)(Dashboard);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    books: state.books
+  }
+}
+
+export default connect(mapStateToProps, null)(Dashboard);
