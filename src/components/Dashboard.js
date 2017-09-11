@@ -29,8 +29,8 @@ class Dashboard extends React.Component {
     return(
       <Card>
         {
-          !auth.inProgress && !auth.fetchingProfile ?
-            (auth.profile ? <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText> : null)
+          !auth.fetchingProfile ?
+            (auth.profile ? null : <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>)
             :
             null
         }

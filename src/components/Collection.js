@@ -72,6 +72,7 @@ class Collection extends React.Component {
   }
 
   render() {
+    const auth = this.props.auth;
     const collectionObj = this.props.books.collection;
     let books = null;
 
@@ -108,7 +109,7 @@ class Collection extends React.Component {
                 onRequestClose={() => this.setState({openedPopover: null})}
               >
                 <Menu>
-                  <MenuItem primaryText="Trade" />
+                  {!auth.fetchingProfile && auth.profile ? <MenuItem primaryText="Trade" /> : null}
                   <MenuItem primaryText="Remove" onClick={() => this.handleRemoveBook(this.props.auth.user.uid, book.id)} />
                 </Menu>
               </Popover>

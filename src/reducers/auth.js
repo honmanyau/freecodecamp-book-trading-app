@@ -49,7 +49,7 @@ export default function auth(state = initialState, action) {
 
     case FETCHING_PROFILE:
       return Object.assign({}, state, {
-        profile: action.payload.fetchingProfile
+        fetchingProfile: action.payload.fetchingProfile
       });
 
     case STORE_PROFILE:
