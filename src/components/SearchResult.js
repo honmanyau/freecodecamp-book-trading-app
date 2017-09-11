@@ -81,7 +81,8 @@ class SearchResult extends React.Component {
                       title: info.title,
                       authors: info.authors,
                       year: info.publishedDate,
-                      imageUrl: info.imageLinks ? info.imageLinks.thumbnail : null
+                      imageUrl: info.imageLinks ? info.imageLinks.thumbnail : null,
+                      trading: false
                   }
                 })}
               />

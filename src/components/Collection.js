@@ -65,6 +65,15 @@ class Collection extends React.Component {
 
   handleRemoveBook(uid, bookId) {
     this.props.actions.removeBookFromCollection(uid, bookId);
+    this.resetPopover();
+  }
+
+  handleTrade(uid, book, listed) {
+    this.props.actions.listBook(uid, book, listed);
+    this.resetPopover();
+  }
+
+  resetPopover() {
     this.setState({
       openedPopover: null,
       anchorElement: null
@@ -97,8 +106,8 @@ class Collection extends React.Component {
             </CardMedia>
             <CardText style={styles.buttonContainer}>
               <FlatButton
-                primary
-                label="Options"
+                primary={book.trading ? false : true}
+                label={book.trading ? '--Listed--' : 'Options'}
                 onClick={(event) => this.handlePopoverButtonClick(index, event.currentTarget)}
               />
               <Popover
@@ -109,8 +118,30 @@ class Collection extends React.Component {
                 onRequestClose={() => this.setState({openedPopover: null})}
               >
                 <Menu>
-                  {!auth.fetchingProfile && auth.profile ? <MenuItem primaryText="Trade" /> : null}
-                  <MenuItem primaryText="Remove" onClick={() => this.handleRemoveBook(this.props.auth.user.uid, book.id)} />
+                  {!auth.fetchingProfile && auth.profile ?
+                    (
+                      book.trading ?
+                        (
+                          <MenuItem
+                            primaryText="Unlist"
+                            onClick={() => this.handleTrade(auth.user.uid, book, false)}
+                          />
+                        )
+                        :
+                        (
+                          <MenuItem
+                            primaryText="Trade"
+                            onClick={() => this.handleTrade(auth.user.uid, book, true)}
+                          />
+                        )
+                    )
+                    :
+                    null
+                  }
+                  <MenuItem
+                    primaryText="Remove"
+                    onClick={() => this.handleRemoveBook(auth.user.uid, book.id)}
+                  />
                 </Menu>
               </Popover>
             </CardText>
