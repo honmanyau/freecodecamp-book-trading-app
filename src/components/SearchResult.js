@@ -54,7 +54,7 @@ class SearchResult extends React.Component {
         const info = book.volumeInfo;
 
         return(
-          <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={book.id}>
+          <Card style={styles.card} containerStyle={{paddingBottom: '0'}} key={index}>
             <CardMedia
               style={styles.cardMedia}
               overlay={
@@ -62,7 +62,7 @@ class SearchResult extends React.Component {
                   titleStyle={styles.overlayTitle}
                   subtitleStyle={styles.overlaySubtitle}
                   title={info.title}
-                  subtitle={info.authors.length > 1 ? info.authors[0].slice(0, 18) + " et al." : info.authors[0].slice(0, 22)}
+                  subtitle={info.authors ? (info.authors.length > 1 ? info.authors[0].slice(0, 18) + " et al." : info.authors[0].slice(0, 22)) : ['Unknown']}
                 />
               }
             >
@@ -80,7 +80,7 @@ class SearchResult extends React.Component {
                       id: book.id,
                       uid: this.props.auth.user.uid,
                       title: info.title,
-                      authors: info.authors,
+                      authors: info.authors ? info.authors : ['Unknown'],
                       year: info.publishedDate,
                       imageUrl: info.imageLinks ? info.imageLinks.thumbnail : null,
                       trading: false
