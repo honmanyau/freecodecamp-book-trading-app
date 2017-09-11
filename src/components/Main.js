@@ -74,7 +74,7 @@ class Main extends React.Component {
               </CardMedia>
 
               {
-                !auth.inProgress && auth.user ?
+                !auth.inProgress && auth.user && auth.user.uid !== book.uid ?
                   <CardText style={styles.buttonContainer}>
                     <FlatButton
                       primary
