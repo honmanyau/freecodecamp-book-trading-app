@@ -34,6 +34,8 @@ class Dashboard extends React.Component {
             :
             null
         }
+        <CardText><Search /></CardText>
+        <CardText><SearchResult /></CardText>
         <CardTitle title="My Collection" />
         <CardText>
           {
@@ -43,8 +45,6 @@ class Dashboard extends React.Component {
               "Meows are checking your book collection! (╯°□°）╯︵ ┻━┻"
           }
         </CardText>
-        <CardText><Search /></CardText>
-        <CardText><SearchResult /></CardText>
       </Card>
     )
   }
