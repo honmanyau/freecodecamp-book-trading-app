@@ -18,20 +18,11 @@ export function authListener() {
     dispatch(signingIn(true));
 
     firebase.auth().onAuthStateChanged(user => {
-      const pathname = window.location.pathname;
-
       if (user) {
         dispatch(signedIn(user));
         dispatch(signingIn(false));
-
-        if (pathname === 'profile') {
-          dispatch(fetchProfile(user.uid));
-        }
-
-        if (pathname === '/dashboard') {
-          dispatch(fetchProfile(user.uid));
-          dispatch(fetchCollection(user.uid));
-        }
+        dispatch(fetchProfile(user.uid));
+        dispatch(fetchCollection(user.uid));
       }
       else {
         dispatch(signedIn(null));

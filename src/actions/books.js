@@ -5,6 +5,8 @@ import firebase from '../firebase';
 export const FETCHING_COLLECTION = 'FETCHING_COLLECTION';
 export const STORE_SEARCH_RESULT = 'STORE_SEARCH_RESULT';
 export const STORE_COLLECTION = 'STORE_COLLECTION';
+export const STORE_LISTED = 'STORE_LISTED';
+export const FETCHING_LISTED = 'FETCHING_LISTED';
 
 export function searchForBooks(bookName) {
   return function(dispatch) {
@@ -49,6 +51,28 @@ export function listBook(uid, book, listed) {
   }
 }
 
+export function fetchListed() {
+  return function(dispatch) {
+    dispatch(fetchingListed(true));
+
+    firebase.database().ref('/book-app/listed').on('value', (snapshot) => {
+      dispatch(storeListed(snapshot.val()));
+      dispatch(fetchingListed(false));
+    }, (error) => {
+      console.log('Error occured while reading listed books.')
+    });
+  }
+}
+
+export function fetchingListed(fetchingListed) {
+  return {
+    type: FETCHING_LISTED,
+    payload: {
+      fetchingListed
+    }
+  }
+}
+
 export function fetchingCollection(fetchingCollection) {
   return {
     type: FETCHING_COLLECTION,
@@ -76,6 +100,14 @@ export function storeCollcetion(collection) {
   }
 }
 
+export function storeListed(listed) {
+  return {
+    type: STORE_LISTED,
+    payload: {
+      listed
+    }
+  }
+}
 
 
 const sampleResponse = {
