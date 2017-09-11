@@ -20,6 +20,14 @@ export function storeSearchResult(searchResult) {
   }
 }
 
+export function addBookToCollection(uid, book) {
+  console.log("ADD", uid, book)
+  return function(dispatch) {
+    firebase.database().ref(`/book-app/users/${uid}/books`).update(book)
+      .catch((error) => console.log('Error occured when attempting to add a book to the collection.'))
+
+  }
+}
 
 
 

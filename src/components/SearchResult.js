@@ -67,7 +67,23 @@ class SearchResult extends React.Component {
             >
               <img style={styles.image} alt={info.imageLinks ? info.title : 'No image available'} src={info.imageLinks ? info.imageLinks.thumbnail : null} />
             </CardMedia>
-            <CardText style={styles.buttonContainer}><FlatButton primary label="Add"/></CardText>
+            <CardText style={styles.buttonContainer}>
+              <FlatButton
+                primary
+                label="Add"
+                onClick={() => this.props.actions.addBookToCollection(
+                  this.props.auth.user.uid,
+                  {
+                    [book.id]: {
+                      id: book.id,
+                      title: info.title,
+                      authors: info.authors,
+                      year: info.publishedDate,
+                      imageUrl: info.imageLinks.thumbnail
+                  }
+                })}
+              />
+            </CardText>
           </Card>
         )
       });
@@ -83,8 +99,16 @@ class SearchResult extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.auth,
     books: state.books
   }
 }
 
-export default connect(mapStateToProps, null)(SearchResult);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(BooksActions, dispatch)
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResult);
