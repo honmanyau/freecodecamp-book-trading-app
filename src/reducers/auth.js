@@ -4,6 +4,7 @@ import {
   SIGNED_IN,
   SIGN_IN_ERROR,
   SIGN_IN_REDIRECT,
+  FETCHING_PROFILE,
   STORE_PROFILE
 } from '../actions/auth';
 
@@ -15,6 +16,7 @@ const initialState = {
   user: null,
   signInError: null,
   signInRedirect: false,
+  fetchingProfile: true,
   profile: null
 };
 
@@ -43,6 +45,11 @@ export default function auth(state = initialState, action) {
     case SIGN_IN_REDIRECT:
       return Object.assign({}, state, {
         signInRedirect: action.payload.redirect
+      });
+
+    case FETCHING_PROFILE:
+      return Object.assign({}, state, {
+        profile: action.payload.fetchingProfile
       });
 
     case STORE_PROFILE:

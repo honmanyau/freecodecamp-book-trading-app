@@ -9,6 +9,7 @@ export const SIGNING_IN = 'SIGNING_IN';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGN_IN_ERROR = 'SIGN_IN_ERROR';
 export const SIGN_IN_REDIRECT = 'SIGN_IN_REDIRECT';
+export const FETCHING_PROFILE = 'FETCHING_PROFILE';
 export const STORE_PROFILE = 'STORE_PROFILE';
 
 // Dispatched in store.js for listening changes in auth state
@@ -64,8 +65,13 @@ export function updateProfile(uid, profile) {
 
 export function fetchProfile(uid) {
   return function(dispatch) {
+    dispatch(fetchingProfile(true));
+
     firebase.database().ref(`/book-app/users/${uid}/profile`).once('value')
-      .then((snapshot) => dispatch(storeProfile(snapshot.val())))
+      .then((snapshot) => {
+        dispatch(storeProfile(snapshot.val()))
+        dispatch(fetchingProfile(false));
+      })
       .catch((erorr) => console.log('Error when fetching profile.'));
   }
 }
@@ -136,6 +142,15 @@ export function signInRedirect(redirect) {
     type: SIGN_IN_REDIRECT,
     payload: {
       redirect
+    }
+  }
+}
+
+export function fetchingProfile(fetchingProfile) {
+  return {
+    type: FETCHING_PROFILE,
+    payload: {
+      fetchingProfile
     }
   }
 }

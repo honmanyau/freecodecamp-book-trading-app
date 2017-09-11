@@ -2,6 +2,7 @@ import firebase from '../firebase';
 
 
 
+export const FETCHING_COLLECTION = 'FETCHING_COLLECTION';
 export const STORE_SEARCH_RESULT = 'STORE_SEARCH_RESULT';
 export const STORE_COLLECTION = 'STORE_COLLECTION';
 
@@ -14,8 +15,11 @@ export function searchForBooks(bookName) {
 
 export function fetchCollection(uid) {
   return function(dispatch) {
+    dispatch(fetchingCollection(true));
+
     firebase.database().ref(`/book-app/users/${uid}/books`).on('value', (snapshot) => {
         dispatch(storeCollcetion(snapshot.val()));
+        dispatch(fetchingCollection(false));
       }, (error) => console.log('Error occured when fetching from collection.'));
   }
 }
@@ -32,6 +36,15 @@ export function removeBookFromCollection(uid, bookId) {
   return function(dispatch) {
     firebase.database().ref(`/book-app/users/${uid}/books/${bookId}`).set(null)
       .catch((error) => console.log('Error occured when removing a book from the collection.'))
+  }
+}
+
+export function fetchingCollection(fetchingCollection) {
+  return {
+    type: FETCHING_COLLECTION,
+    payload: {
+      fetchingCollection
+    }
   }
 }
 

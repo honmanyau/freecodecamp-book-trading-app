@@ -24,18 +24,25 @@ const styles = {
 class Dashboard extends React.Component {
   render() {
     const auth = this.props.auth;
+    const books = this.props.books;
 
     return(
       <Card>
         {
-          !auth.inProgress && auth.profile ?
-            <span>
-              <CardTitle title="My Collection" />
-              <CardText><Collection /></CardText>
-            </span>
+          !auth.inProgress && !auth.fetchingProfile ?
+            (auth.profile ? <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText> : null)
             :
-            <CardText style={styles.reminder}>You must update <Link style={styles.link} to="/profile">your profile</Link> before trading books.</CardText>
+            null
         }
+        <CardTitle title="My Collection" />
+        <CardText>
+          {
+            !auth.inProgress && !books.fetchingCollection ?
+              (books.collection ? <Collection /> : "You have no books in your collection! (╯°□°）╯︵ ┻━┻")
+              :
+              "Meows are checking your book collection! (╯°□°）╯︵ ┻━┻"
+          }
+        </CardText>
         <CardText><Search /></CardText>
         <CardText><SearchResult /></CardText>
       </Card>
